@@ -46,4 +46,30 @@ public class GreetingTest {
         String location = response.getHeader("Location");
         System.out.println(location);
     }
+
+    @Test
+    public void testLongRedirect() {
+        int redirects = 0;
+        String location = "https://playground.learnqa.ru/api/long_redirect";
+
+        while (true) {
+            Response response = RestAssured
+                    .given()
+                    .redirects()
+                    .follow(false)
+                    .when()
+                    .get(location)
+                    .andReturn();
+            int statusCode = response.getStatusCode();
+
+            if (statusCode == 200) {
+                break;
+            } else {
+                location = response.getHeader("Location");
+                redirects += 1;
+            }
+        }
+
+        System.out.println(redirects);
+    }
 }
