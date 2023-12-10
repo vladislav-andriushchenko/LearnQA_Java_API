@@ -22,8 +22,7 @@ public class GreetingTest {
     }
 
     @Test
-    public void getJsonHomework() {
-
+    public void testJsonHomework() {
         JsonPath response = RestAssured
                 .given()
                 .get("https://playground.learnqa.ru/api/get_json_homework")
@@ -32,5 +31,19 @@ public class GreetingTest {
         response.prettyPrint();
         String name = response.get("messages[1].message");
         System.out.println(name);
+    }
+
+    @Test
+    public void testRedirect() {
+        Response response = RestAssured
+                .given()
+                .redirects()
+                .follow(false)
+                .when()
+                .get("https://playground.learnqa.ru/api/long_redirect")
+                .andReturn();
+
+        String location = response.getHeader("Location");
+        System.out.println(location);
     }
 }
