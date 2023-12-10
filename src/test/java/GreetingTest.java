@@ -72,4 +72,56 @@ public class GreetingTest {
 
         System.out.println(redirects);
     }
+
+    @Test
+    public void testJob() throws InterruptedException {
+        String url = "https://playground.learnqa.ru/ajax/api/longtime_job";
+
+        JsonPath responseJobWithoutToken = RestAssured
+                .given()
+                .when()
+                .get("https://playground.learnqa.ru/ajax/api/longtime_job")
+                .jsonPath();
+
+        String token = responseJobWithoutToken.get("token");
+        int seconds = responseJobWithoutToken.get("seconds");
+
+        JsonPath responseJobWithToken = RestAssured
+                .given()
+                .queryParam("token", token)
+                .get(url)
+                .jsonPath();
+
+        String statusValue = responseJobWithToken.get("status");
+
+        int milliseconds = seconds * 1000;
+
+        if (statusValue.equals("Job is NOT ready")) {
+            Thread.sleep(milliseconds);
+            JsonPath responseJobFinal = RestAssured
+                    .given()
+                    .queryParam("token", token)
+                    .get(url)
+                    .jsonPath();
+
+            String statusValueFinal = responseJobFinal.get("status");
+            String result = responseJobFinal.get("result");
+
+            if (statusValueFinal.equals("Job is ready")) {
+                System.out.println("OK\n status equals: " + statusValueFinal);
+            } else {
+                System.out.println("The status is incorrect\n Expected: \"Job is ready\"\n But was: " + statusValueFinal);
+            }
+
+            if (result != null) {
+                System.out.println("OK\n result is not null");
+            } else {
+                System.out.println("The result is empty");
+            }
+
+        } else {
+            System.out.println("The status is incorrect\n Expected: \"Job is NOT ready\"\n But was: " + statusValue);
+        }
+
+    }
 }
