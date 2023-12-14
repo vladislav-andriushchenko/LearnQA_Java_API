@@ -170,6 +170,7 @@ public class GreetingTest {
                     .andReturn();
 
             if (responseCheck.print().equals("You are authorized")) {
+                System.out.println("The correct password is: " + password);
                 break;
             }
         }
