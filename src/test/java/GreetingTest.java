@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class GreetingTest {
 
 
@@ -174,5 +176,12 @@ public class GreetingTest {
                 break;
             }
         }
+    }
+
+    @Test
+    public void testLength() {
+        String example = "1234567890qwerty";
+
+        assertTrue(example.length() > 15, "The length should be longer that 15 characters: " + example.length());
     }
 }
