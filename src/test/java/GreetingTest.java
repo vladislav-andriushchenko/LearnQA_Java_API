@@ -184,4 +184,20 @@ public class GreetingTest {
 
         assertTrue(example.length() > 15, "The length should be longer that 15 characters: " + example.length());
     }
+
+    @Test
+    public void testCookie() {
+        String url = "https://playground.learnqa.ru/api/homework_cookie";
+
+        Response response = RestAssured
+                .when()
+                .get(url)
+                .andReturn();
+
+        Map<String, String> cookies = response.getCookies();
+
+        assertTrue(cookies.containsKey("HomeWork"), "Response doesn't have 'HomeWork' cookie");
+        assertTrue(cookies.containsValue("hw_value"), "The cookie's value doesn't have 'hw_value' value\n" +
+                "Actual value is: " + cookies.get("HomeWork"));
+    }
 }
