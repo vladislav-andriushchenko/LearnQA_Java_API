@@ -1,4 +1,5 @@
 import io.restassured.RestAssured;
+import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GreetingTest {
@@ -199,5 +201,22 @@ public class GreetingTest {
         assertTrue(cookies.containsKey("HomeWork"), "Response doesn't have 'HomeWork' cookie");
         assertTrue(cookies.containsValue("hw_value"), "The cookie's value doesn't have 'hw_value' value\n" +
                 "Actual value is: " + cookies.get("HomeWork"));
+    }
+
+    @Test
+    public void testHeader() {
+        String url = "https://playground.learnqa.ru/api/homework_header";
+
+        Response response = RestAssured
+                .when()
+                .get(url)
+                .andReturn();
+
+        Headers headers = response.getHeaders();
+
+        assertTrue(headers.hasHeaderWithName("x-secret-homework-header"), "Response doesn't have 'x-secret-homework-header' header");
+        assertEquals(headers.getValue("x-secret-homework-header"), "Some secret value",
+                "The header doesn't have 'Some secret value' value: " + headers.getValue("x-secret-homework-header"));
+
     }
 }
