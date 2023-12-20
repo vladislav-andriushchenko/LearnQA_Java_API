@@ -1,17 +1,14 @@
 package tests;
 
 import io.restassured.RestAssured;
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import lib.Assertions;
 import lib.BaseTestCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UserAuthTest extends BaseTestCase {
     String cookie;
@@ -40,16 +37,13 @@ public class UserAuthTest extends BaseTestCase {
     public void testAuthUser() {
         String url = "https://playground.learnqa.ru/api/user/auth";
 
-        JsonPath responseCheckAuth = RestAssured
+        Response responseCheckAuth = RestAssured
                 .given()
                 .header("x-csrf-token", this.header)
                 .cookie("auth_sid", this.cookie)
                 .get(url)
-                .jsonPath();
+                .andReturn();
 
-        int userIdOnCheck = responseCheckAuth.getInt("user_id");
-        assertTrue(userIdOnCheck > 0, "Unexpected user id " + userIdOnCheck);
-
-        assertEquals(userIdOnAuth, userIdOnCheck, "user id form auth request isn't equal to user id from check request");
+        Assertions.asserJsonByName(responseCheckAuth, "user_id", this.userIdOnAuth);
     }
 }
