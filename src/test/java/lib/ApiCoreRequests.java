@@ -79,24 +79,28 @@ public class ApiCoreRequests {
     }
 
     @Step("Create a new user and return id")
-    public String createNewUserAndReturnId(String url) {
+    public String createNewUserAndReturnId(String registerUrl) {
         Map<String, String> authData = DataGenerator.getRegistrationData();
 
         JsonPath response = given()
                 .filter(new AllureRestAssured())
                 .body(authData)
-                .post(url)
+                .post(registerUrl)
                 .jsonPath();
 
         return response.get("id");
     }
 
     @Step("Return user's auth data")
-    public Map<String, String> returnAuthDataLoggedUser(String url, Map<String, String> credential) {
+    public Map<String, String> returnAuthDataLoggedUser(String loginUrl, Map<String, String> registerData) {
+        Map<String, String> userCredentials = new HashMap<>();
+        userCredentials.put("email", registerData.get("email"));
+        userCredentials.put("password", registerData.get("password"));
+
         Response response = given()
                 .filter(new AllureRestAssured())
-                .body(credential)
-                .post(url)
+                .body(userCredentials)
+                .post(loginUrl)
                 .andReturn();
 
         String header = response.getHeader("x-csrf-token");
@@ -107,5 +111,24 @@ public class ApiCoreRequests {
         authData.put("cookie", cookie);
 
         return authData;
+    }
+
+    @Step("Delete a user by id")
+    public Response deleteUserById(String url, String header, String cookie, String userId) {
+        return given()
+                .header("x-csrf-token", header)
+                .cookie("auth_sid", cookie)
+                .delete(url + userId)
+                .andReturn();
+    }
+
+    @Step("Get user info by id")
+    public Response getUserInfoById(String url, String header, String cookie, String userId) {
+        return given()
+                .filter(new AllureRestAssured())
+                .header("x-csrf-token", header)
+                .cookie("auth_sid", cookie)
+                .get(url + userId)
+                .andReturn();
     }
 }
