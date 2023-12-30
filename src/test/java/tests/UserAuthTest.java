@@ -47,7 +47,7 @@ public class UserAuthTest extends BaseTestCase {
 
         Response responseCheckAuth = apiCoreRequests.makeGetRequest(url, this.header, this.cookie);
 
-        Assertions.asserJsonByName(responseCheckAuth, "user_id", this.userIdOnAuth);
+        Assertions.assertJsonByName(responseCheckAuth, "user_id", this.userIdOnAuth);
     }
 
     @Description("This test checks authorization status w/o sending auth cookie or token")
@@ -59,10 +59,10 @@ public class UserAuthTest extends BaseTestCase {
 
         if (condition.equals("cookie")) {
             Response responseForCheck = apiCoreRequests.makeGetRequestWithCookie(url, this.cookie);
-            Assertions.asserJsonByName(responseForCheck, "user_id", 0);
+            Assertions.assertJsonByName(responseForCheck, "user_id", 0);
         } else if (condition.equals("headers")) {
             Response responseForCheck = apiCoreRequests.makeGetRequestWithToken(url, this.header);
-            Assertions.asserJsonByName(responseForCheck, "user_id", 0);
+            Assertions.assertJsonByName(responseForCheck, "user_id", 0);
         } else {
             throw new IllegalArgumentException("Condition value is known: " + condition);
         }

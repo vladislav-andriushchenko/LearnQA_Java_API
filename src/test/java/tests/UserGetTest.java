@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class UserGetTest extends BaseTestCase {
     String loginUrl = "https://playground.learnqa.ru/api/user/login";
-    String GetUserDataUrl = "https://playground.learnqa.ru/api/user/";
+    String getUserDataUrl = "https://playground.learnqa.ru/api/user/";
     String registerUrl = "https://playground.learnqa.ru/api/user/";
     private final ApiCoreRequests apiCoreRequests = new ApiCoreRequests();
 
@@ -78,7 +78,7 @@ public class UserGetTest extends BaseTestCase {
         String newUserId = responseCreateUser.get("id");
 
         //Get a new user info using auth data from initial user
-        Response responseGetUserData = apiCoreRequests.makeGetRequest(GetUserDataUrl + newUserId, header, cookie);
+        Response responseGetUserData = apiCoreRequests.makeGetRequest(getUserDataUrl + newUserId, header, cookie);
 
         Assertions.assertJsonHasField(responseGetUserData, "username");
         Assertions.assertJsonHasNotField(responseGetUserData, "firstName");
