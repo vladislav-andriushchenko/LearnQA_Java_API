@@ -1,8 +1,6 @@
 package tests;
 
-import io.qameta.allure.Description;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
+import io.qameta.allure.*;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lib.ApiCoreRequests;
@@ -10,6 +8,8 @@ import lib.Assertions;
 import lib.BaseTestCase;
 import lib.DataGenerator;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -17,6 +17,7 @@ import java.util.Map;
 
 @Epic("Deletion cases")
 @Feature("Deletion")
+@Tags({@Tag("Regression"), @Tag("Deletion")})
 public class UserDeleteTest extends BaseTestCase {
     String baseUrl = "https://playground.learnqa.ru/api/user/";
     String loginUrl = "https://playground.learnqa.ru/api/user/login";
@@ -25,6 +26,7 @@ public class UserDeleteTest extends BaseTestCase {
 
 
     @Test
+    @Severity(SeverityLevel.CRITICAL)
     @Description("This test checks the ability to delete admin user")
     @DisplayName("Test negative deletion user")
     public void testDeleteAdmin() {
@@ -43,6 +45,7 @@ public class UserDeleteTest extends BaseTestCase {
     }
 
     @Test
+    @Severity(SeverityLevel.CRITICAL)
     @Description("This test successfully delete authorized user")
     @DisplayName("Test positive deletion auth user")
     public void testDeleteUserSuccessfully() {
@@ -69,6 +72,7 @@ public class UserDeleteTest extends BaseTestCase {
     }
 
     @Test
+    @Severity(SeverityLevel.NORMAL)
     @Description("This test checks the ability to delete some user by another user")
     @DisplayName("Test negative deletion some user by another user")
     public void testDeleteAnotherUserByLoggedUser() {

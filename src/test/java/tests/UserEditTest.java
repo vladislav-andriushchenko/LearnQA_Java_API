@@ -1,8 +1,6 @@
 package tests;
 
-import io.qameta.allure.Description;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
+import io.qameta.allure.*;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -11,6 +9,8 @@ import lib.Assertions;
 import lib.BaseTestCase;
 import lib.DataGenerator;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -22,6 +22,7 @@ import java.util.stream.Stream;
 
 @Epic("Edit user data cases")
 @Feature("Edit user data")
+@Tags({@Tag("Regression"), @Tag("Editing")})
 public class UserEditTest extends BaseTestCase {
     String loginUrl = "https://playground.learnqa.ru/api/user/login";
     String getUserDataUrl = "https://playground.learnqa.ru/api/user/";
@@ -36,6 +37,7 @@ public class UserEditTest extends BaseTestCase {
     }
 
     @Test
+    @Severity(SeverityLevel.CRITICAL)
     @Description("This test successfully editing a created user")
     @DisplayName("Test positive edit a new user")
     public void testEditJustCreatedTest() {
@@ -80,6 +82,7 @@ public class UserEditTest extends BaseTestCase {
     }
 
     @Test
+    @Severity(SeverityLevel.NORMAL)
     @Description("This test checks the ability to edit not authorized user")
     @DisplayName("Test negative edit user")
     public void testEditNotAuthUser() {
@@ -100,6 +103,7 @@ public class UserEditTest extends BaseTestCase {
     }
 
     @Test
+    @Severity(SeverityLevel.NORMAL)
     @Description("This test checks the ability to edit some user using auth data of another user")
     @DisplayName("Test negative edit user by another user")
     public void testEditAnotherUser() {
@@ -138,6 +142,7 @@ public class UserEditTest extends BaseTestCase {
 
     @Description("This test checks the ability to edit and set incorrect user data")
     @DisplayName("Test negative edit user with incorrect data")
+    @Severity(SeverityLevel.NORMAL)
     @ParameterizedTest(name = "{index} {2}")
     @MethodSource("testData")
     public void testSetInvalidDataAuthUser(String key, String value, String ignoredNameTest) {

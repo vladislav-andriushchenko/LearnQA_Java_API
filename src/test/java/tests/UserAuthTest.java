@@ -15,8 +15,7 @@ import java.util.Map;
 @Epic("Authorization cases")
 @Feature("Authorization")
 @Tags({@Tag("Regression"), @Tag("Authorization")})
-@Link(name = "Story", url = "https://youtrack.jetbrains.com/issues/yourIssue")
-public class  UserAuthTest extends BaseTestCase {
+public class UserAuthTest extends BaseTestCase {
     String cookie;
     String header;
     int userIdOnAuth;
@@ -38,7 +37,6 @@ public class  UserAuthTest extends BaseTestCase {
     }
 
     @Test
-    @TmsLink("1995")
     @Severity(SeverityLevel.CRITICAL)
     @Description("This test successfully authorize user by email and password")
     @DisplayName("Test positive auth user")
@@ -53,7 +51,6 @@ public class  UserAuthTest extends BaseTestCase {
     @Description("This test checks authorization status w/o sending auth cookie or token")
     @DisplayName("Test negative auth user")
     @Severity(SeverityLevel.CRITICAL)
-    @TmsLink("1996")
     @ParameterizedTest
     @ValueSource(strings = {"cookie", "headers"})
     public void testNegativeAuthUser(String condition) {
