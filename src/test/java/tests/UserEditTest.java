@@ -1,5 +1,8 @@
 package tests;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -7,6 +10,7 @@ import lib.ApiCoreRequests;
 import lib.Assertions;
 import lib.BaseTestCase;
 import lib.DataGenerator;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -16,6 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+@Epic("Edit user data cases")
+@Feature("Edit user data")
 public class UserEditTest extends BaseTestCase {
     String loginUrl = "https://playground.learnqa.ru/api/user/login";
     String getUserDataUrl = "https://playground.learnqa.ru/api/user/";
@@ -30,6 +36,8 @@ public class UserEditTest extends BaseTestCase {
     }
 
     @Test
+    @Description("This test successfully editing a created user")
+    @DisplayName("Test positive edit a new user")
     public void testEditJustCreatedTest() {
         Map<String, String> userData = DataGenerator.getRegistrationData();
 
@@ -72,6 +80,8 @@ public class UserEditTest extends BaseTestCase {
     }
 
     @Test
+    @Description("This test checks the ability to edit not authorized user")
+    @DisplayName("Test negative edit user")
     public void testEditNotAuthUser() {
         //Create a new user
         Map<String, String> newUserData = DataGenerator.getRegistrationData();
@@ -90,6 +100,8 @@ public class UserEditTest extends BaseTestCase {
     }
 
     @Test
+    @Description("This test checks the ability to edit some user using auth data of another user")
+    @DisplayName("Test negative edit user by another user")
     public void testEditAnotherUser() {
         //Create a new user 1
         Map<String, String> newUser1Data = DataGenerator.getRegistrationData();
@@ -124,6 +136,8 @@ public class UserEditTest extends BaseTestCase {
         Assertions.assertJsonHasNotField(responseGetEditedData, "email");
     }
 
+    @Description("This test checks the ability to edit and set incorrect user data")
+    @DisplayName("Test negative edit user with incorrect data")
     @ParameterizedTest(name = "{index} {2}")
     @MethodSource("testData")
     public void testSetInvalidDataAuthUser(String key, String value, String ignoredNameTest) {

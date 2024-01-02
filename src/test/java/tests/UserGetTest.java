@@ -1,5 +1,8 @@
 package tests;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -7,11 +10,14 @@ import lib.ApiCoreRequests;
 import lib.Assertions;
 import lib.BaseTestCase;
 import lib.DataGenerator;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Epic("Get user data cases")
+@Feature("Get user data")
 public class UserGetTest extends BaseTestCase {
     String loginUrl = "https://playground.learnqa.ru/api/user/login";
     String getUserDataUrl = "https://playground.learnqa.ru/api/user/";
@@ -19,6 +25,8 @@ public class UserGetTest extends BaseTestCase {
     private final ApiCoreRequests apiCoreRequests = new ApiCoreRequests();
 
     @Test
+    @Description("This test successfully get not authorized user data")
+    @DisplayName("Test positive get not auth user data")
     public void testGetUserDataNotAuth() {
         Response responseGetUserData = RestAssured
                 .get("https://playground.learnqa.ru/api/user/2")
@@ -33,6 +41,8 @@ public class UserGetTest extends BaseTestCase {
     }
 
     @Test
+    @Description("This test successfully get authorized user data")
+    @DisplayName("Test positive get auth user data")
     public void testGetUserDetailsAuthSameUser() {
         Map<String, String> userData = new HashMap<>();
         userData.put("email", "vinkotov@example.com");
@@ -61,6 +71,8 @@ public class UserGetTest extends BaseTestCase {
     }
 
     @Test
+    @Description("This test checks the ability to get user data using auth data of another user")
+    @DisplayName("Test negative get user data by another user")
     public void testGetUserDetailsAuthNotTheSameUser() {
         Map<String, String> user1Data = new HashMap<>();
         user1Data.put("email", "vinkotov@example.com");
